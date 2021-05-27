@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -21,24 +22,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Database.DbProductHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListProductActivity extends AppCompatActivity {
     private Spinner spnUnitProduct;
     private EditText inputProductID, inputProductName, inputProductPrice;
-    private Button confirmBtn, addProductBtn;
+    private Button confirmBtn, addProductBtn, backBtn;
     private ListProductAdapter listProductAdapter;
     private RecyclerView recyclerListProduct;
     private List<Product> productList;
+    private DbProductHelper dbProductHelper;
+    private Product product;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product);
 
-        Product product = new Product("", "", "", 0, 0);
-        productList = getAllProductFromDb();
+        dbProductHelper = new DbProductHelper(ListProductActivity.this);
+        dbProductHelper.getWritableDatabase();
+
+        product = new Product("", "", "", 0, 0);
+        productList = new ArrayList<>();
 
         listProductAdapter = new ListProductAdapter(getParent());
         recyclerListProduct = (RecyclerView) findViewById(R.id.rcv_list_product);
@@ -106,6 +114,21 @@ public class ListProductActivity extends AppCompatActivity {
 
 
         confirmBtn = (Button) findViewById(R.id.confirm_btn);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmProduct(productList);
+            }
+        });
+
+        backBtn = (Button) findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ListProductActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         addProductBtn = (Button) findViewById(R.id.add_product_btn);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +145,8 @@ public class ListProductActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "Điền lại giá tiền!", Toast.LENGTH_SHORT).show();
                 }
+                if (!isExistInProductList(productList, product))
+                    Toast.makeText(getApplicationContext(), "Mã hoặc tên sản phẩm đã tồn tại!", Toast.LENGTH_SHORT).show();
                 else {
                     product.setPrice(Integer.parseInt(strPrice));
                     productList.add(product);
@@ -134,10 +159,25 @@ public class ListProductActivity extends AppCompatActivity {
                     inputProductPrice.setText("0");
                     spnUnitProduct.setSelection(adapter.getPosition("Hộp"));
 
+                    product = new Product("", "", "", 0, 0);
+
                     Log.i("TAG",  "so luong " + productList.size() + "");
                 }
             }
         });
+    }
+
+    public boolean isExistInProductList(List<Product> productList, Product product)
+    {
+        int linh = 0;
+        for(int i=0; i<productList.size(); i++)
+        {
+            if(product.getID().equals(productList.get(i).getID()) || product.getName().equals(productList.get(i).getName()))
+                linh = 1;
+        }
+        if (linh==1)
+            return false;
+        else return true;
     }
 
     public static boolean isNumeric(String str) {
@@ -175,4 +215,21 @@ public class ListProductActivity extends AppCompatActivity {
         return productList;
     }
 
+    public void confirmProduct(List<Product> productList)
+    {
+        if(getAllProductFromDb() == null)
+        {
+            for (Product product : productList)
+            {
+                dbProductHelper.insertData(product.getID(), product.getName(), product.getUnit(), product.getPrice());
+            }
+        }
+        else {
+            for (Product product : productList)
+            {
+                if(!dbProductHelper.checkID(product.getID()) && !dbProductHelper.checkName(product.getName()))
+                    dbProductHelper.insertData(product.getID(), product.getName(), product.getUnit(), product.getPrice());
+            }
+        }
+    }
 }
