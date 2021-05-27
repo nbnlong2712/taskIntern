@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Phần mềm bán hàng SFA</string>
+    <string name="list_product">Danh sách sản phẩm</string>
+    <string name="create_order">Tạo đơn hàng</string>
+    <string name="exit">Thoát</string>
+    <string name="back">Quay lại</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="add_product">Thêm sản phẩm</string>
+    <string name="delete">Xóa</string>
+</resources>
