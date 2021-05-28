@@ -141,6 +141,7 @@
         android:layout_marginStart="610dp"
         android:layout_marginBottom="195dp"
         android:inputType="text"
+        android:text="0"
         android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +152,6 @@
         android:id="@+id/title_list_product_bar"
         android:layout_width="900dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:background="#a9a9a9"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -197,16 +197,16 @@
 
         <android.widget.Button
             android:layout_width="wrap_content"
-            android:background="#a9a9a9"
             android:layout_height="wrap_content"
+            android:background="#a9a9a9"
             android:backgroundTint="#a9a9a9" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_list_product"
         android:layout_width="900dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="330dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="266dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -217,7 +217,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="78dp"
+        android:layout_marginBottom="100dp"
         android:backgroundTint="#df0000"
         android:text="@string/add_product"
         app:layout_constraintBottom_toBottomOf="parent"

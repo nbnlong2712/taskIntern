@@ -5,7 +5,6 @@ public class Product {
     private String name;
     private String unit;
     private int price;
-    private int amount;
 
     public int getPrice() {
         return price;
@@ -15,12 +14,11 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String ID, String name, String unit, int price, int amount) {
+    public Product(String ID, String name, String unit, int price) {
         this.ID = ID;
         this.name = name;
         this.unit = unit;
         this.price = price;
-        this.amount = amount;
     }
 
     public String getID() {
@@ -45,13 +43,5 @@ public class Product {
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 }

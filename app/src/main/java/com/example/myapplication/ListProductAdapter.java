@@ -1,14 +1,22 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Database.DbProductHelper;
 
 import java.util.List;
 
@@ -16,13 +24,11 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private Activity activity;
     private List<Product> productList;
 
-    public ListProductAdapter(Activity activity1)
-    {
-        activity = activity1;
+    public ListProductAdapter(Activity activity1) {
+        this.activity = activity1;
     }
 
-    public void setData(List<Product> products)
-    {
+    public void setData(List<Product> products) {
         productList = products;
         notifyDataSetChanged();
     }
@@ -42,20 +48,23 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productList.remove(holder);
-                notifyDataSetChanged();
+                productList.remove(position);
+                setData(productList);
+
+                new DbProductHelper(activity).deleteProduct(product.getID());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (productList == null)
+            return 0;
+        return productList.size();
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public class ListProductHolder extends RecyclerView.ViewHolder
-    {
+    public class ListProductHolder extends RecyclerView.ViewHolder {
         private TextView textViewID, textViewName, textViewUnit, textViewPrice;
         private Button deleteBtn;
         private Product singleProduct;
@@ -69,8 +78,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             deleteBtn = (Button) itemView.findViewById(R.id.delete_btn);
         }
 
-        public void bind(Product product)
-        {
+        public void bind(Product product) {
             singleProduct = product;
             textViewID.setText(singleProduct.getID());
             textViewName.setText(singleProduct.getName());

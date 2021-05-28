@@ -49,6 +49,13 @@ public class DbProductHelper extends SQLiteOpenHelper {
         else return false;
     }
 
+    public Boolean deleteProduct(String id)
+    {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        int result = MyDB.delete("Product", " id = ?", new String[]{id});
+        return result > 1;
+    }
+
     public Boolean checkName(String name)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();

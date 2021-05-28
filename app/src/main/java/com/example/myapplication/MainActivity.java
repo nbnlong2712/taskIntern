@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.example.myapplication.Database.DbProductHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private Button listProductBtn;
     private Button createOrderBtn;
     private Button exitBtn;
