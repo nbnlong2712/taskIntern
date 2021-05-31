@@ -1,13 +1,14 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapplication.R;
+import com.example.myapplication.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class CreateOrderActivity extends AppCompatActivity {

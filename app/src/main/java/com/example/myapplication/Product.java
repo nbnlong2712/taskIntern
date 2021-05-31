@@ -5,6 +5,23 @@ public class Product {
     private String name;
     private String unit;
     private int price;
+    private int amount;
+
+    public Product(String ID, String name, String unit, int price, int amount) {
+        this.ID = ID;
+        this.name = name;
+        this.unit = unit;
+        this.price = price;
+        this.amount = amount;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
     public int getPrice() {
         return price;
@@ -14,12 +31,6 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String ID, String name, String unit, int price) {
-        this.ID = ID;
-        this.name = name;
-        this.unit = unit;
-        this.price = price;
-    }
 
     public String getID() {
         return ID;

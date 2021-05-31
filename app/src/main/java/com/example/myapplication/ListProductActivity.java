@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -69,6 +67,7 @@ public class ListProductActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spnUnitProduct.setAdapter(adapter);
 
+        // Unit of product
         spnUnitProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +79,7 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
 
+        // ID of product
         inputProductID = (EditText) findViewById(R.id.id_product);
         inputProductID.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,7 +88,7 @@ public class ListProductActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                prodId = s.toString();
+                prodId = s.toString().trim();
             }
 
             @Override
@@ -96,6 +96,7 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
 
+        // Name of product
         inputProductName = (EditText) findViewById(R.id.name_product);
         inputProductName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,7 +105,7 @@ public class ListProductActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                prodName = s.toString();
+                prodName = s.toString().trim();
             }
 
             @Override
@@ -112,6 +113,7 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
 
+        // Price of product
         inputProductPrice = (EditText) findViewById(R.id.price_product);
         inputProductPrice.addTextChangedListener(new TextWatcher() {
             @Override
@@ -120,7 +122,7 @@ public class ListProductActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                prodPrice = s.toString();
+                prodPrice = s.toString().trim();
             }
 
             @Override
@@ -141,19 +143,19 @@ public class ListProductActivity extends AppCompatActivity {
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String strID = inputProductID.getText().toString();
-                String strName = inputProductName.getText().toString();
-                String strPrice = inputProductPrice.getText().toString();
-                Product product = new Product(strID, strName, prodUnit, 0);
+                String strID = inputProductID.getText().toString().trim();
+                String strName = inputProductName.getText().toString().trim();
+                String strPrice = inputProductPrice.getText().toString().trim();
+                Product product = new Product(strID, strName, prodUnit, 0, 0);
                 if (strID == null || strID.isEmpty() || strName == null || strName.isEmpty() || strPrice == null || strPrice.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please điền đầy đủ!", Toast.LENGTH_SHORT).show();
-                } else if (!isNumeric(strPrice)) {
+                } else if (strPrice.equals("0")) {
                     Toast.makeText(getApplicationContext(), "Điền lại giá tiền!", Toast.LENGTH_SHORT).show();
                 } else if (!isExistInProductList(productList, product))
                     Toast.makeText(getApplicationContext(), "Mã hoặc tên sản phẩm đã tồn tại!", Toast.LENGTH_SHORT).show();
                 else {
                     product.setPrice(Integer.parseInt(strPrice));
-                    productList.add(new Product(prodId, prodName, prodUnit, Integer.parseInt(prodPrice)));
+                    productList.add(new Product(prodId, prodName, prodUnit, Integer.parseInt(prodPrice), 0));
 
                     Toast.makeText(getApplicationContext(), "Đã thêm sản phẩm " + product.getName(), Toast.LENGTH_SHORT).show();
 
@@ -165,7 +167,6 @@ public class ListProductActivity extends AppCompatActivity {
                     inputProductName.setText("");
                     inputProductPrice.setText("0");
                     spnUnitProduct.setSelection(adapter.getPosition("Hộp"));
-                    Log.i("TAiGA", productList.size()+"");
 
                 }
             }
@@ -192,15 +193,6 @@ public class ListProductActivity extends AppCompatActivity {
         else return true;
     }
 
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     public List<Product> getAllProductFromDb() {
         productList = new ArrayList<>();
         SQLiteDatabase db = openOrCreateDatabase("Product.db", Context.MODE_PRIVATE, null);
@@ -210,7 +202,7 @@ public class ListProductActivity extends AppCompatActivity {
             String productName = cursor.getString(1);
             String productUnit = cursor.getString(2);
             int productPrice = cursor.getInt(3);
-            Product prod = new Product(productId, productName, productUnit, productPrice);
+            Product prod = new Product(productId, productName, productUnit, productPrice, 0);
             productList.add(prod);
         }
         if (listProductAdapter == null) {

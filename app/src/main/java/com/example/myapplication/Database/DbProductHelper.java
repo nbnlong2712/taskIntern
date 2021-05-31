@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.Product;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DbProductHelper extends SQLiteOpenHelper {
     public static final String DbProduct = "Product.db";
 
@@ -63,5 +68,21 @@ public class DbProductHelper extends SQLiteOpenHelper {
         if (cursor.getCount() > 0)
             return true;
         else return false;
+    }
+
+    public List<Product> getAllProductFromDB()
+    {
+        List<Product> productList = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from Product", null);
+        while (cursor.moveToNext()) {
+            String productId = cursor.getString(0);
+            String productName = cursor.getString(1);
+            String productUnit = cursor.getString(2);
+            int productPrice = cursor.getInt(3);
+            Product prod = new Product(productId, productName, productUnit, productPrice, 0);
+            productList.add(prod);
+        }
+        return productList;
     }
 }

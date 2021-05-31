@@ -14,6 +14,7 @@
         android:background = "@drawable/cell_shape"
         android:ellipsize = "end"
         android:padding = "5dp"
+        android:gravity="center_vertical"
         android:text = "Ma san pham"
         android:singleLine = "true" />
 
@@ -25,10 +26,12 @@
         android:background = "@drawable/cell_shape"
         android:ellipsize = "end"
         android:padding = "5dp"
+        android:gravity="center_vertical"
         android:text = "Ten san pham"
         android:singleLine = "true" />
 
     <TextView
+        android:gravity="center_vertical"
         android:id = "@+id/product_detail_unit"
         android:layout_width = "0dp"
         android:layout_height = "match_parent"
@@ -40,6 +43,7 @@
         android:singleLine = "true" />
 
     <TextView
+        android:gravity="center_vertical"
         android:id = "@+id/product_detail_price"
         android:layout_width = "0dp"
         android:layout_height = "match_parent"
@@ -50,8 +54,29 @@
         android:text = "Gia tien"
         android:singleLine = "true" />
 
-    <EditText
-        android:id = "@+id/product_detail_amount"
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/cell_shape"
+        android:gravity="center">
+        <EditText
+            android:id = "@+id/product_detail_amount"
+            android:layout_width = "120dp"
+            android:layout_height = "30dp"
+            android:textSize="14dp"
+            android:inputType="numberDecimal"
+            android:background = "@drawable/custom_edit_text"
+            android:ellipsize = "end"
+            android:padding = "5dp"
+            android:hint="0"
+            android:singleLine = "true" />
+    </LinearLayout>
+
+    <TextView
+        android:gravity="center_vertical"
+        android:id = "@+id/product_detail_sum_price"
         android:layout_width = "0dp"
         android:layout_height = "match_parent"
         android:layout_weight = "1"
@@ -59,17 +84,6 @@
         android:ellipsize = "end"
         android:padding = "5dp"
         android:text = "0"
-        android:singleLine = "true" />
-
-    <TextView
-        android:id = "@+id/product_detail_sumprice"
-        android:layout_width = "0dp"
-        android:layout_height = "match_parent"
-        android:layout_weight = "1"
-        android:background = "@drawable/cell_shape"
-        android:ellipsize = "end"
-        android:padding = "5dp"
-        android:text = "Thanh tien"
         android:singleLine = "true" />
 
 </LinearLayout>

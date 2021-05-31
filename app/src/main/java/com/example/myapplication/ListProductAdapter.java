@@ -1,19 +1,13 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.DbProductHelper;
@@ -24,8 +18,8 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private Activity activity;
     private List<Product> productList;
 
-    public ListProductAdapter(Activity activity1) {
-        this.activity = activity1;
+    public ListProductAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     public void setData(List<Product> products) {
@@ -37,7 +31,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     @org.jetbrains.annotations.NotNull
     @Override
     public ListProductHolder onCreateViewHolder(@NonNull @org.jetbrains.annotations.NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.item_product, parent, false);
         return new ListProductHolder(view);
     }
 
@@ -45,15 +39,6 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ListProductHolder holder, int position) {
         Product product = productList.get(position);
         holder.bind(product);
-        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                productList.remove(position);
-                setData(productList);
-
-                new DbProductHelper(activity).deleteProduct(product.getID());
-            }
-        });
     }
 
     @Override
@@ -76,6 +61,14 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             textViewUnit = (TextView) itemView.findViewById(R.id.product_unit);
             textViewPrice = (TextView) itemView.findViewById(R.id.product_price);
             deleteBtn = (Button) itemView.findViewById(R.id.delete_btn);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    productList.remove(getAdapterPosition());
+                    new DbProductHelper(activity).deleteProduct(singleProduct.getID());
+                    ListProductAdapter.this.notifyDataSetChanged();
+                }
+            });
         }
 
         public void bind(Product product) {
