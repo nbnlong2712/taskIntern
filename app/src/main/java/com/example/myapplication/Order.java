@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public class Order {
     private UUID uuid;
-    private int sumPrice;
     private Date dateOrder;
     private String customer;
     private String phoneNumber;
@@ -15,7 +14,6 @@ public class Order {
     public Order()
     {
         this(UUID.randomUUID());
-        sumPrice = 0;
         dateOrder = new Date();
         customer = "";
         phoneNumber = "";
@@ -26,7 +24,6 @@ public class Order {
     public Order(UUID uuid)
     {
         this.uuid = uuid;
-        sumPrice = 0;
         dateOrder = new Date();
         customer = "";
         phoneNumber = "";
@@ -34,9 +31,8 @@ public class Order {
         note = "";
     }
 
-    public Order(UUID uuid, int sumPrice, Date dateOrder, String customer, String phoneNumber, String address, String note) {
+    public Order(UUID uuid, Date dateOrder, String customer, String phoneNumber, String address, String note) {
         this.uuid = uuid;
-        this.sumPrice = sumPrice;
         this.dateOrder = dateOrder;
         this.customer = customer;
         this.phoneNumber = phoneNumber;
@@ -54,13 +50,7 @@ public class Order {
         this.uuid = uuid;
     }
 
-    public int getSumPrice() {
-        return sumPrice;
-    }
 
-    public void setSumPrice(int sumPrice) {
-        this.sumPrice = sumPrice;
-    }
 
     public Date getDateOrder() {
         return dateOrder;

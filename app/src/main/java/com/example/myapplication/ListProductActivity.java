@@ -213,6 +213,7 @@ public class ListProductActivity extends AppCompatActivity {
             listProductAdapter.setData(productList);
             recyclerListProduct.setAdapter(listProductAdapter);
         }
+        cursor.close();
         return productList;
     }
 

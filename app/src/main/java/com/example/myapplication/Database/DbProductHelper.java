@@ -85,4 +85,18 @@ public class DbProductHelper extends SQLiteOpenHelper {
         }
         return productList;
     }
+
+    public Product getProductFromDB(String id)
+    {
+        Product product = new Product(id, "", "", 0, 0);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from Product where id = ?",new String[]{id});
+        if(cursor.moveToFirst())
+        {
+            product.setName(cursor.getString(1));
+            product.setUnit(cursor.getString(2));
+            product.setPrice(cursor.getInt(3));
+        }
+        return product;
+    }
 }

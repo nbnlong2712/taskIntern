@@ -1,5 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -7,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapplication.Database.DbOrderHelper;
+import com.example.myapplication.Database.DbOrderProductHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;

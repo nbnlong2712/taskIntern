@@ -2,16 +2,22 @@ package com.example.myapplication.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.OrderProduct;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DbOrderProductHelper extends SQLiteOpenHelper {
-    public static final String DbProduct = "Product.db";
+    public static final String DbOrderProduct = "OrderProduct.db";
 
     public DbOrderProductHelper(@Nullable Context context) {
-        super(context, DbProduct, null, 1);
+        super(context, DbOrderProduct, null, 1);
     }
 
     @Override
@@ -36,5 +42,29 @@ public class DbOrderProductHelper extends SQLiteOpenHelper {
         long result = MyDB.insert("Order_Product", null, contentValues);
         if(result == 1) return false;
         else return true;
+    }
+
+    public List<OrderProduct> getAllOrderProductFromDB(String id_order)
+    {
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from Order_Product where id_order = ? ", new String[]{id_order});
+        while (cursor.moveToNext())
+        {
+            String id_ord = cursor.getString(0);
+            String id_prd = cursor.getString(1);
+            int amount = cursor.getInt(2);
+            OrderProduct product = new OrderProduct(id_ord, id_prd, amount);
+            orderProducts.add(product);
+        }
+        cursor.close();
+        return orderProducts;
+    }
+
+    public void deleteAllFromDB(String id_order)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("delete from Order_Product where id_order = ?", new String[]{id_order});
+        cursor.close();
     }
 }

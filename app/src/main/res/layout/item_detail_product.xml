@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <TextView
+        android:layout_marginStart="2dp"
+        android:id = "@+id/product_detail_id"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "Ma san pham"
+        android:singleLine = "true" />
+
+    <TextView
+        android:id = "@+id/product_detail_name"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "Ten san pham"
+        android:singleLine = "true" />
+
+    <TextView
+        android:id = "@+id/product_detail_unit"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "Don vi tinh"
+        android:singleLine = "true" />
+
+    <TextView
+        android:id = "@+id/product_detail_price"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "Gia tien"
+        android:singleLine = "true" />
+
+    <EditText
+        android:id = "@+id/product_detail_amount"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "0"
+        android:singleLine = "true" />
+
+    <TextView
+        android:id = "@+id/product_detail_sumprice"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:background = "@drawable/cell_shape"
+        android:ellipsize = "end"
+        android:padding = "5dp"
+        android:text = "Thanh tien"
+        android:singleLine = "true" />
+
+</LinearLayout>
