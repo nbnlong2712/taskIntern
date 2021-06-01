@@ -11,7 +11,10 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.Order;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class DbOrderHelper extends SQLiteOpenHelper {
@@ -48,16 +51,26 @@ public class DbOrderHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-    public Order getOrderFromDB(String id)
+    public List<String> getOrderInfoFromDB(String id)
     {
-        Order order = new Order(UUID.fromString(id));
+        List<String> list = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from Orders where id = ?", new String[]{id});
         if(cursor.moveToFirst())
         {
-            order.setDateOrder(new Date(cursor.getLong(1)));
+            String datetime = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).
+                    format(new Date(cursor.getLong(1)));
+            list.add(datetime);
+            String customer = cursor.getString(2);
+            list.add(customer);
+            String phone = cursor.getString(3);
+            list.add(phone);
+            String address = cursor.getString(4);
+            list.add(address);
+            String note = cursor.getString(5);
+            list.add(note);
         }
-        return order;
+        return list;
     }
 
     public void updateCustomerInfo(String id, String customer, String phone_number, String address, String note)
@@ -80,5 +93,11 @@ public class DbOrderHelper extends SQLiteOpenHelper {
         if (cursor.getCount() > 0)
             return true;
         else return false;
+    }
+
+    public void deleteOrder(String id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from Orders where id = ? ", new String[]{id});
     }
 }

@@ -5,12 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CreateOrderActivity">
+    tools:context=".Activity.CreateOrderActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager_order"
+    <FrameLayout
+        android:id="@+id/frame_layout_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="480dp" />
+        android:layout_height="480dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_order"
+            android:layout_width="match_parent"
+            android:layout_height="480dp" />
+    </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_order"
@@ -18,11 +24,11 @@
         android:layout_height="50dp"
         android:layout_gravity="bottom"
         app:tabBackground="@drawable/selected_tab"
-        app:tabPaddingEnd="@dimen/cardview_compat_inset_shadow"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"
-        app:tabTextColor="#949494"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#000000" />
+        app:tabPaddingEnd="@dimen/cardview_compat_inset_shadow"
+        app:tabSelectedTextColor="#000000"
+        app:tabTextColor="#949494" />
 
 </LinearLayout>

@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.myapplication.FragmentOrderConfirm;
-import com.example.myapplication.FragmentOrderDetails;
+import com.example.myapplication.Fragment.FragmentOrderConfirm;
+import com.example.myapplication.Fragment.FragmentOrderDetails;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,5 +1,6 @@
 package com.example.myapplication.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             });
         }
 
+        @SuppressLint("SetTextI18n")
         public void bind(Product product) {
             singleProduct = product;
             textViewID.setText(singleProduct.getID());
