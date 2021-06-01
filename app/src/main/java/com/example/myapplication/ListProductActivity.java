@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Adapter.ListProductAdapter;
 import com.example.myapplication.Database.DbProductHelper;
 
 import java.util.ArrayList;

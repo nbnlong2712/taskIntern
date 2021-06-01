@@ -86,12 +86,7 @@ public class FragmentOrderDetails extends Fragment {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getOrderSumAmount(productOrderList) == 0)
-                    Toast.makeText(getActivity(), "Hãy chọn mặt hàng muốn mua!", Toast.LENGTH_SHORT).show();
-                else {
-                    confirmOrder();
-                    Toast.makeText(getActivity(), "Đã lưu!", Toast.LENGTH_SHORT).show();
-                }
+                confirmOrder();
             }
         });
 
@@ -150,20 +145,26 @@ public class FragmentOrderDetails extends Fragment {
     }
 
     public void confirmOrder() {
-        if (dbOrderHelper.checkOrderExists(order.getUuid().toString()) == null)
-            dbOrderHelper.insertData(order.getUuid().toString()
-                    , order.getDateOrder().getTime()
-                    , "", "", "", "");
+        if (getOrderSumAmount(productOrderList) == 0)
+            Toast.makeText(getActivity(), "Hãy chọn mặt hàng muốn mua!", Toast.LENGTH_SHORT).show();
+        else {
+            //confirmOrder();
+            if (!dbOrderHelper.checkOrderExists(order.getUuid().toString()))
+                dbOrderHelper.insertData(order.getUuid().toString()
+                        , order.getDateOrder().getTime()
+                        , "", "", "", "");
 
-        dbOrderProductHelper.deleteAllFromDB(order.getUuid().toString());
+            dbOrderProductHelper.deleteAllFromDB(order.getUuid().toString());
 
-        List<Product> products = dbProductHelper.getAllProductFromDB();
-        for (Product product : products) {
-            if (product.getAmount() != 0) {
-                dbOrderProductHelper.insertData(order.getUuid().toString(), product.getID(), product.getAmount());
+            for (Product product : productOrderList) {
+                if (product.getAmount() != 0) {
+                    dbOrderProductHelper.insertData(order.getUuid().toString(), product.getID(), product.getAmount());
+                }
             }
+            Log.i("TAGGGGG", dbOrderProductHelper.getAllOrderProductFromDB(order.getUuid().toString()).size() + "");
+
+            Toast.makeText(getActivity(), "Đã lưu!", Toast.LENGTH_SHORT).show();
         }
-        Log.i("TAGGGGG", dbOrderProductHelper.getAllOrderProductFromDB(order.getUuid().toString()).size() + "");
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

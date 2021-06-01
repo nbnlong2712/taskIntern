@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.DbProductHelper;
+import com.example.myapplication.Product;
+import com.example.myapplication.R;
 
 import java.util.List;
 

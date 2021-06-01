@@ -1,10 +1,9 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Product;
+import com.example.myapplication.R;
 
 import java.util.List;
 

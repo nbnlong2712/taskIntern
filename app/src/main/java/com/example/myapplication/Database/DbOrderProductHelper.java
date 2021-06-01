@@ -64,7 +64,6 @@ public class DbOrderProductHelper extends SQLiteOpenHelper {
     public void deleteAllFromDB(String id_order)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("delete from Order_Product where id_order = ?", new String[]{id_order});
-        cursor.close();
+        db.execSQL("delete from Order_Product where id_order = ? ", new String[]{id_order});
     }
 }
