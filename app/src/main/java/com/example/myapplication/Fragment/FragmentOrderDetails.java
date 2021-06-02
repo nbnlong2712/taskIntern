@@ -38,22 +38,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentOrderDetails extends Fragment {
-    private Button btnBack;
-    private Button btnConfirm;
-    private SearchView searchView;
-    private TextView orderId, orderSKUs, orderSumAmount, orderSumPrice;
-    private RecyclerView recyclerView;
-    private Order order;
-    private DetailOrderAdapter detailOrderAdapter;
-    private DbProductHelper dbProductHelper;
-    private DbOrderProductHelper dbOrderProductHelper;
-    private DbOrderHelper dbOrderHelper;
-    private List<Product> productOrderList;
+    private Button btnBack;     // btn trở lại
+    private Button btnConfirm;     // btn xác nhận
+    private SearchView searchView;   //thanh search
+    private TextView orderId, orderSKUs, orderSumAmount, orderSumPrice;  //textview hiển thị thông tin id, tổng sku, tổng số lượng và tổng tiền
+    private RecyclerView recyclerView;   //recyclerview hiển thị danh sách sản phẩm
+    private Order order;   //object order
+    private DetailOrderAdapter detailOrderAdapter;  //adapter để chứa list danh sách sản phẩm
+    private DbProductHelper dbProductHelper;     // object của db product
+    private DbOrderProductHelper dbOrderProductHelper;  //object của db chứa các product thuộc 1 order
+    private DbOrderHelper dbOrderHelper;     //object của db chứa các order
+    private List<Product> productOrderList;    //list product dùng để truyền vào adapter
 
-    private ISendIdListener sendIdListener;
+    private ISendIdListener sendIdListener;   //interface dùng để truyền dữ liệu từ màn hình chi tiết đơn hàng sang màn hình xác nhận đơn hàng
 
     public interface ISendIdListener{
-        void sendIdOrder(String idOrder);
+        void sendIdOrder(String idOrder);  //phương thức của interface
     }
 
     @SuppressLint("SetTextI18n")
@@ -61,13 +61,15 @@ public class FragmentOrderDetails extends Fragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_order_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_details, container, false);   //set view cho fragment
 
+        // ánh xạ các view
         orderId = (TextView) view.findViewById(R.id.order_detail_id);
         orderSKUs = (TextView) view.findViewById(R.id.order_detail_sku);
         orderSumAmount = (TextView) view.findViewById(R.id.order_detail_amount);
         orderSumPrice = (TextView) view.findViewById(R.id.order_detail_sum_price);
 
+        // mở các database
         dbProductHelper = new DbProductHelper(getActivity());
         dbProductHelper.getWritableDatabase();
         dbOrderProductHelper = new DbOrderProductHelper(getActivity());
@@ -75,28 +77,33 @@ public class FragmentOrderDetails extends Fragment {
         dbOrderHelper = new DbOrderHelper(getActivity());
         dbOrderHelper.getWritableDatabase();
 
+        //tạo mới đối tượng order
         order = new Order();
 
+        // gọi hàm lấy tất cả product có trong database và add vào productOrderList
         if(dbProductHelper.getAllProductFromDB().size() == 0)
             productOrderList = new ArrayList<>();
         else productOrderList = dbProductHelper.getAllProductFromDB();
+
+        //khai báo adapter, setData cho adapter và truyền adapter vào recyclerview để hiển thị
         detailOrderAdapter = new DetailOrderAdapter(productOrderList);
         recyclerView = (RecyclerView) view.findViewById(R.id.rcv_detail_order);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         recyclerView.setAdapter(detailOrderAdapter);
 
+        //nút xác nhận
         btnConfirm = (Button) view.findViewById(R.id.confirm_btn_detail);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmOrder();
-                sendIdListener.sendIdOrder(order.getUuid().toString());
+                sendIdListener.sendIdOrder(order.getUuid().toString());  //gọi phương thức trong database để truyền dữ liệu sang activity chủ của fragment
             }
         });
 
         orderId.setText(order.getUuid().toString());
 
+        //nút search
         searchView = (SearchView) view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -104,7 +111,6 @@ public class FragmentOrderDetails extends Fragment {
                 detailOrderAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 detailOrderAdapter.getFilter().filter(newText);
@@ -112,11 +118,12 @@ public class FragmentOrderDetails extends Fragment {
             }
         });
 
+        //nút quay trở lại page trước
         btnBack = (Button) view.findViewById(R.id.back_btn_detail);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbOrderHelper.deleteOrder(order.getUuid().toString());
+                dbOrderHelper.deleteOrder(order.getUuid().toString());      //nếu nhấn btnBack thì xóa order vừa mới tạo
                 dbOrderProductHelper.deleteAllFromDB(order.getUuid().toString());
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 startActivity(i);
@@ -125,10 +132,10 @@ public class FragmentOrderDetails extends Fragment {
         return view;
     }
 
+    // đính kèm interface
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
-
         if (context instanceof ISendIdListener ){
             sendIdListener = (ISendIdListener) context;
         } else {
@@ -136,6 +143,7 @@ public class FragmentOrderDetails extends Fragment {
         }
     }
 
+    //hàm tính tổng SKU
     public int getOrderSKUs(List<Product> productLists) {
         int s = 0;
         for (Product product : productLists) {
@@ -146,6 +154,7 @@ public class FragmentOrderDetails extends Fragment {
         return s;
     }
 
+    //hàm tính tổng số product
     public int getOrderSumAmount(List<Product> productLists) {
         int s = 0;
         for (Product product : productLists)
@@ -154,6 +163,7 @@ public class FragmentOrderDetails extends Fragment {
         return s;
     }
 
+    //hàm tính tổng tiền
     public int getOrderSumPrice(List<Product> productLists) {
         int s = 0;
         for (Product product : productLists)
@@ -162,15 +172,22 @@ public class FragmentOrderDetails extends Fragment {
         return s;
     }
 
+
+    //hàm xác nhận đơn hàng
     public void confirmOrder() {
+        //nếu tổng product bằng 0, hay nói cách khác là người dùng chưa chọn mua mặt hàng nào mà nhấn xác nhận, thì sẽ thông báo như bên dưới
         if (getOrderSumAmount(productOrderList) == 0)
             Toast.makeText(getActivity(), "Hãy chọn mặt hàng muốn mua!", Toast.LENGTH_SHORT).show();
+        //nếu tổng product khác 0 thì nhảy vào đây xử lý tiếp
         else {
+            //nếu ID của order chưa tồn tại trong db thì thêm vào db
             if (!dbOrderHelper.checkOrderExists(order.getUuid().toString())) {
                 dbOrderHelper.insertData(order.getUuid().toString(), order.getDateOrder().getTime(), "", "", "", "");
             }
+            //xóa tất cả các dòng có id của order(mở thư mục Database lên đọc để hiểu thêm)
             dbOrderProductHelper.deleteAllFromDB(order.getUuid().toString());
 
+            //chèn order và các sản phẩm đã chọn vào database
             for (Product product : productOrderList) {
                 if (product.getAmount() != 0) {
                     dbOrderProductHelper.insertData(order.getUuid().toString(), product.getID(), product.getAmount());
@@ -180,7 +197,7 @@ public class FragmentOrderDetails extends Fragment {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////  ADAPTER  //////////////////////////////////////////////////
     public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.DetailOrderHolder> implements Filterable {
         private List<Product> productList;
         private List<Product> productListFake;
@@ -215,6 +232,7 @@ public class FragmentOrderDetails extends Fragment {
             productList = products;
         }
 
+        // hàm này dùng cho việc tìm kiếm (search)
         @Override
         public Filter getFilter() {
             return new Filter() {
@@ -246,7 +264,7 @@ public class FragmentOrderDetails extends Fragment {
             };
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////   HOLDER   //////////////////////////////////////////
         public class DetailOrderHolder extends RecyclerView.ViewHolder {
             private TextView textViewID, textViewName, textViewUnit, textViewPrice, textViewSumPrice;
             private EditText amountProduct;
@@ -265,15 +283,16 @@ public class FragmentOrderDetails extends Fragment {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
-
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.toString().trim().equals("") || s.toString().trim().isEmpty()) {
                             productList.get(getAdapterPosition()).setAmount(0);
+                            productListFake.get(getAdapterPosition()).setAmount(0);
                             productOrderList.get(getAdapterPosition()).setAmount(0);
                         } else {
                             productList.get(getAdapterPosition()).setAmount(Integer.parseInt(s.toString().trim()));
+                            productListFake.get(getAdapterPosition()).setAmount(Integer.parseInt(s.toString().trim()));
                             productOrderList.get(getAdapterPosition()).setAmount(Integer.parseInt(s.toString().trim()));
                         }
                         textViewSumPrice.setText((singleProduct.getPrice() * productList.get(getAdapterPosition()).getAmount()) + "");
@@ -281,7 +300,6 @@ public class FragmentOrderDetails extends Fragment {
                         getOrderSumAmount(productList);
                         getOrderSumPrice(productList);
                     }
-
                     @Override
                     public void afterTextChanged(Editable s) {
                     }
