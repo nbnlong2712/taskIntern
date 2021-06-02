@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".Activity.CreateOrderActivity"/>
         <activity android:name=".Activity.ListProductActivity"/>
+        <activity android:name=".Activity.OrderActivity"/>
+        <activity android:name=".Activity.DetailOrderActivity"/>
     </application>
 
 </manifest>

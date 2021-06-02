@@ -266,6 +266,7 @@ public class FragmentOrderDetails extends Fragment {
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.toString().trim().equals("") || s.toString().trim().isEmpty()) {

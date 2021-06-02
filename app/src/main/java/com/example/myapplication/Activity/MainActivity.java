@@ -14,7 +14,7 @@ import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity{
     private Button listProductBtn;
-    private Button createOrderBtn;
+    private Button createOrderBtn, historyOrderBtn;
     private Button exitBtn;
     private DbProductHelper dbProductHelper;
     private DbOrderHelper dbOrderHelper;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity{
 
         listProductBtn = (Button) findViewById(R.id.list_product_btn);
         createOrderBtn = (Button) findViewById(R.id.create_order_btn);
+        historyOrderBtn = (Button) findViewById(R.id.view_order_btn);
         exitBtn = (Button) findViewById(R.id.exit_btn);
 
         listProductBtn.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +55,19 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        historyOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(i);
+            }
+        });
+
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                System.exit(0);
             }
         });
     }

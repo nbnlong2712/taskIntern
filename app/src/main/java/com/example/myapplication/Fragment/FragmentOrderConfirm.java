@@ -166,7 +166,9 @@ public class FragmentOrderConfirm extends Fragment {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (strCustomer.equals("") || strCustomer.isEmpty() || strPhoneNumber.equals("") || strPhoneNumber.isEmpty() ||
+                if(productList.size() == 0)
+                    Toast.makeText(getActivity(), "Chưa có mặt hàng nào!", Toast.LENGTH_SHORT).show();
+                else if (strCustomer.equals("") || strCustomer.isEmpty() || strPhoneNumber.equals("") || strPhoneNumber.isEmpty() ||
                         strAddress.equals("") || strAddress.isEmpty() || strNote.equals("") || strNote.isEmpty()) {
                     Toast.makeText(getActivity(), "Điền đầy đủ thông tin trước khi đặt hàng!" , Toast.LENGTH_SHORT).show();
                 }
