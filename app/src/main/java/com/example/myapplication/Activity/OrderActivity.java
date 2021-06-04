@@ -66,6 +66,20 @@ public class OrderActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                orderAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                orderAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     public List<Order> getValidOrder()

@@ -89,7 +89,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
+                orderList = (List<Order>) results.values;
+                notifyDataSetChanged();
             }
         };
     }

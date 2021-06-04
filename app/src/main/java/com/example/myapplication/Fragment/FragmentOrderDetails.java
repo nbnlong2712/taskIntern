@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -102,13 +104,13 @@ public class FragmentOrderDetails extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 detailOrderAdapter.getFilter().filter(query);
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 detailOrderAdapter.getFilter().filter(newText);
-                return false;
+                return true;
             }
         });
 
@@ -128,7 +130,6 @@ public class FragmentOrderDetails extends Fragment {
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
-
         if (context instanceof ISendIdListener ){
             sendIdListener = (ISendIdListener) context;
         } else {
@@ -183,11 +184,11 @@ public class FragmentOrderDetails extends Fragment {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.DetailOrderHolder> implements Filterable {
         private List<Product> productList;
-        private List<Product> productListFake;
+        private final List<Product> productListFake;
 
         public DetailOrderAdapter(List<Product> products) {
             this.productList = products;
-            this.productListFake = productList;
+            this.productListFake = new ArrayList<>(productList);
         }
 
         @NonNull
@@ -221,26 +222,25 @@ public class FragmentOrderDetails extends Fragment {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     String strSearch = constraint.toString();
+                    List<Product> list = new ArrayList<>();
                     if (strSearch.isEmpty())
-                        productList = productListFake;
+                        list.addAll(productListFake);
                     else {
-                        List<Product> list = new ArrayList<>();
                         for (Product product : productListFake) {
                             if (product.getID().toLowerCase().contains(strSearch.toLowerCase())
                                     || product.getName().toLowerCase().contains(strSearch.toLowerCase()))
                                 list.add(product);
                         }
-                        productList = list;
                     }
                     FilterResults results = new FilterResults();
-                    results.values = productList;
-
+                    results.values = list;
                     return results;
                 }
 
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    productList = (List<Product>) results.values;
+                    productList.clear();
+                    productList.addAll((List<Product>) results.values);
                     notifyDataSetChanged();
                 }
             };
@@ -250,7 +250,6 @@ public class FragmentOrderDetails extends Fragment {
         public class DetailOrderHolder extends RecyclerView.ViewHolder {
             private TextView textViewID, textViewName, textViewUnit, textViewPrice, textViewSumPrice;
             private EditText amountProduct;
-            private Product singleProduct;
 
             public DetailOrderHolder(@NonNull View itemView) {
                 super(itemView);
@@ -263,12 +262,11 @@ public class FragmentOrderDetails extends Fragment {
                 amountProduct = (EditText) itemView.findViewById(R.id.product_detail_amount);
                 amountProduct.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    public void onTextChanged(CharSequence s, int start, int before, int count)
+                    {
                         if (s.toString().trim().equals("") || s.toString().trim().isEmpty()) {
                             productList.get(getAdapterPosition()).setAmount(0);
                             productOrderList.get(getAdapterPosition()).setAmount(0);
@@ -276,21 +274,23 @@ public class FragmentOrderDetails extends Fragment {
                             productList.get(getAdapterPosition()).setAmount(Integer.parseInt(s.toString().trim()));
                             productOrderList.get(getAdapterPosition()).setAmount(Integer.parseInt(s.toString().trim()));
                         }
-                        textViewSumPrice.setText((singleProduct.getPrice() * productList.get(getAdapterPosition()).getAmount()) + "");
                         getOrderSKUs(productList);
                         getOrderSumAmount(productList);
                         getOrderSumPrice(productList);
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void afterTextChanged(Editable s) {
+                        Product singleProduct = productList.get(getAdapterPosition());
+                        textViewSumPrice.setText((singleProduct.getPrice() * singleProduct.getAmount()) + "");
                     }
                 });
             }
 
             @SuppressLint("SetTextI18n")
             public void bind(Product product) {
-                singleProduct = product;
+                Product singleProduct = productList.get(getAdapterPosition());
                 textViewID.setText(singleProduct.getID());
                 textViewName.setText(singleProduct.getName());
                 textViewUnit.setText(singleProduct.getUnit());

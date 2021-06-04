@@ -37,7 +37,6 @@ public class DetailOrderActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Product> productList;
 
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {

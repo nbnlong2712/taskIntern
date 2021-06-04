@@ -287,8 +287,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_order_detail"
         android:layout_width="900dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="308dp"
+        android:layout_height="230dp"
+        android:layout_marginTop="290dp"
         android:background="#eeeeee"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

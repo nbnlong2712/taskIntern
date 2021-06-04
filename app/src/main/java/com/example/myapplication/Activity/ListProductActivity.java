@@ -219,6 +219,7 @@ public class ListProductActivity extends AppCompatActivity {
         {
             for (Product product : productList) {
                 dbProductHelper.insertData(product.getID(), product.getName(), product.getUnit(), product.getPrice());
+                getAllProductFromDb();
             }
         }
         else

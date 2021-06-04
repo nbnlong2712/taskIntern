@@ -78,7 +78,7 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter<ConfirmOrderAdapte
             textViewUnit.setText(singleProduct.getUnit());
             textViewPrice.setText(singleProduct.getPrice() + "");
             textViewAmount.setText(singleProduct.getAmount() + "");
-            textViewID.setText((singleProduct.getPrice() * singleProduct.getAmount()) + "");
+            textViewSumPrice.setText((singleProduct.getPrice() * singleProduct.getAmount()) + "");
         }
     }
 }
